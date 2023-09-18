@@ -2,11 +2,6 @@
     "name": "basket/add-to-basket",
     "description": "Statamic addon to integrate with Basket app",
     "license": "proprietary",
-    "autoload": {
-        "psr-4": {
-            "Basket\\AddToBasket\\": "src"
-        }
-    },
     "extra": {
         "statamic": {
             "name": "Basket",
