@@ -1,0 +1,21 @@
+{
+    "name": "basket/add-to-basket",
+    "description": "Statamic addon to integrate with Basket app",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Basket\\AddToBasket\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Basket",
+            "description": "Simplify adding an Add to Basket button on your website"
+        },
+        "laravel": {
+            "providers": [
+                "Basket\\AddToBasket\\ServiceProvider"
+            ]
+        }
+    }
+}
