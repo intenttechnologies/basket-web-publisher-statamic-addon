@@ -25,42 +25,33 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     const slug = payload.values.slug;
     const bard = JSON.parse(payload.values.page_builder);
 
-    // const storedLinks = payload.values.add_to_basket?.links || [];
-
     const linksFound = [
         ...bard.reduce((prev, curr) => {
             const values = curr?.attrs?.values;
             if (
                 curr.type === "set" &&
                 values?.type === "button" &&
-                RegExp(/^Buy now/).test(values?.text)
+                RegExp(/^Buy now/).test(values?.text) && 
+                values?.url
             ) {
-                const url = values.url;
-                const cleaned = cleanUrl(url);
-                prev.add(cleaned.url);
-                // affiliateUrl should be set by public script on publisher
+                const url = values?.url;
+                try {
+                    const cleaned = cleanUrl(url);
+                    prev.add(cleaned.url);
+                } catch (e) {
+                    reject(`A Button URL field contains invalid text: ${url}`);
+                }
             }
             return prev;
         }, new Set()), // use set to prevent duplications
     ];
 
-    console.log("linksFound", JSON.stringify(linksFound, null, 2));
-    // console.log("storedLinks", JSON.stringify(storedLinks, null, 2));
-
-    // const linksToSave =  linksInCopy;
-    // const linksToSave = linksInCopy.filter(
-    //     (link) =>
-    //         !storedLinks.some(
-    //             (storedLink) =>
-    //                 storedLink?.url === link &&
-    //                 storedLink?.status === "ready"
-    //         )
-    // );
-
-    // console.log("linksToSave", JSON.stringify(linksToSave, null, 2));
-
     if (linksFound.length < 1) {
         console.log("Nothing to save");
+        payload.values.add_to_basket = {
+            enabled: payload.values.add_to_basket.enabled,
+            links: [],
+        };
         resolve();
         return;
     }
@@ -89,25 +80,8 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
             basketId
         });
 
-        // const resultsToSave = results.filter((r) => r?.url);
-
-        // const linksInCorrectOrder = linksInCopy
-        //     .map((link) => {
-        //         const storedLink = storedLinks.find((s) => s?.url === link);
-        //         if (storedLink && storedLink?.status === "ready") {
-        //             return storedLink;
-        //         }
-        //         return results.find((s) => {
-        //             console.log(s?.url, link)
-        //             return s?.url === link
-        //         });
-        //     })
-        //     .filter((s) => s?.url);
-        // console.log("linksInCorrectOrder", JSON.stringify(linksInCorrectOrder, null, 2));
-
         payload.values.add_to_basket = {
             enabled: payload.values.add_to_basket.enabled,
-            // ensure links data matches order in copy
             links: items,
         };
 

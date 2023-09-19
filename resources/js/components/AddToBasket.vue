@@ -32,7 +32,7 @@
                         <div
                             class="atb-image-container shrink-0 rounded-xl overflow-hidden mr-4"
                         >
-                            <img class="atb-image" :src="link?.image?.cdnUrl" />
+                            <img class="atb-image" :src="link?.image?.retailerUrl || link?.image?.cdnUrl" />
                         </div>
 
                         <div class="atb-content grow min-w-0 flex flex-col">
@@ -86,23 +86,6 @@
                                 >
                             </div>
                         </div>
-                        <!-- <div
-                            v-if="link?.hidden"
-                            class="atb-hidden absolute w-full h-full flex justify-center items-center flex-col"
-                        >
-                            <p class="text-md font-semibold">Item hidden</p>
-                            <p class="text-xs text-gray-600">
-                                This item won’t be published.
-                            </p>
-                        </div>
-                        <Eye
-                            v-bind:open="!link?.hidden"
-                            class="atb-eye absolute cursor-pointer"
-                            @click.native="
-                                link.hidden = !Boolean(link.hidden);
-                                save();
-                            "
-                        /> -->
                     </div>
                 </div>
             </div>
@@ -117,11 +100,6 @@
 </template>
 
 <style scoped>
-/* .atb-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-} */
 .atb-image-container {
     width: 80px;
     height: 80px;
@@ -188,19 +166,11 @@ export default {
     props: ["value"],
     mixins: [Fieldtype],
     data() {
-        const enabled =
-            this.value?.enabled === undefined ? true : this.value?.enabled;
         return {
-            enabled,
+            enabled: Boolean(this.value?.enabled)
         };
     },
     mounted() {
-        // set initial values
-        // const links = (this.value?.links || []).map((link) => ({
-        //     ...link,
-        //     hidden: link.hidden ?? false,
-        // }));
-
         this.update({
             enabled: this.enabled,
             links: this.value?.links || [],
