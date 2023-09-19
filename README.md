@@ -17,6 +17,12 @@ Add your api_key to your env file
 ADD_TO_BASKET_API_KEY=xxx
 ```
 
+Set env to use the production environment for prod/live deployments
+
+```
+ADD_TO_BASKET_ENVIRONMENT=production
+```
+
 ## How to Use
 
 1. Add the Add To Basket field to your page blueprint
