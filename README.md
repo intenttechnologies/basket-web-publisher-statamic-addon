@@ -2,28 +2,34 @@
 
 > Statamic addon to simplify adding an Add to Basket button on your website
 
-## Features
-
-This addon does:
-
-- This
-- And this
-- And even this
-
 ## How to Install
 
-Run this command from root of your Statamic project
+Run this command from the root of your Statamic project
 
 ``` bash
 composer require basket/add-to-basket
+php artisan vendor:publish --tag=add-to-basket-config
+```
+
+Add your api_key to your env file
+
+```
+ADD_TO_BASKET_API_KEY=xxx
 ```
 
 ## How to Use
 
-Here's where you can explain how to use this wonderful addon.
-
-`php artisan vendor:publish --tag=add-to-basket-config`
-
+1. Add the Add To Basket field to your page blueprint
+2. Click the Add To Basket 'Enabled' checkbox in the page entry and Save
+3. Add Basket script tag to your template head: `{{ basket:script_tag | raw }}`
+4. Add the button to your page template:
+``` antlers
+{{ if add_to_basket.enabled && add_to_basket.links | length }}
+   <button onClick='{{ basket:share_modal_onclick data={{add_to_basket}} | raw }}'>
+       Add to Basket
+   </button>
+{{ /if }}
+```
 
 # Dev notes
 
