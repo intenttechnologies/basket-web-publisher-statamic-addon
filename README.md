@@ -11,13 +11,13 @@ composer require basket/add-to-basket
 php artisan vendor:publish --tag=add-to-basket-config
 ```
 
-Add your api_key to your env file
+Add your api_key to the add-to-basket.php config or env file
 
 ```
 ADD_TO_BASKET_API_KEY=xxx
 ```
 
-Set env to use the production environment for prod/live deployments
+Add env var to use the production environment for prod/live deployments
 
 ```
 ADD_TO_BASKET_ENVIRONMENT=production
@@ -25,7 +25,7 @@ ADD_TO_BASKET_ENVIRONMENT=production
 
 ## How to Use
 
-1. Add the Add To Basket field to your page blueprint
+1. Add the Add To Basket field to your page blueprint with the handle `add_to_basket`
 2. Click the Add To Basket 'Enabled' checkbox in the page entry and Save
 3. Add Basket script tag to your template head: `{{ basket:script_tag | raw }}`
 4. Add the button to your page template:
