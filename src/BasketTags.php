@@ -30,6 +30,6 @@ class BasketTags extends Tags
                 'id' => $item['id']
             ];
         }, $data['links']);
-        return '__BASKET__.shareModal(' . json_encode($parsed) . ')';
+        return '__BASKET__.shareModal({items:' . json_encode($parsed) . '})';
     }
 }
