@@ -3,12 +3,9 @@
 namespace Basket\AddToBasket;
 
 use Statamic\Statamic;
-use Statamic\Events\EntrySaving;
 use Statamic\Providers\AddonServiceProvider;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Event;
-
-use Basket\AddToBasket\BasketFieldtype;
+use Statamic\Events\EntrySaved;
 
 
 class ServiceProvider extends AddonServiceProvider
@@ -28,6 +25,12 @@ class ServiceProvider extends AddonServiceProvider
         ],
         'publicDirectory' => 'resources/dist',
     ];
+
+    // protected $listen = [
+    //     EntrySaved::class => [
+    //         SaveBasketItems::class,
+    //     ]
+    // ];
 
     public function bootAddon()
     {
