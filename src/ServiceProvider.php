@@ -34,7 +34,8 @@ class ServiceProvider extends AddonServiceProvider
         Statamic::provideToScript(
             [
                 'add-to-basket:environment' => config('add-to-basket.environment'),
-                'add-to-basket:api_key' => config('add-to-basket.api_key')
+                'add-to-basket:api_key' => config('add-to-basket.api_key'),
+                'add-to-basket:publisher_name' => config('add-to-basket.publisher_name')
             ]
         );
     }

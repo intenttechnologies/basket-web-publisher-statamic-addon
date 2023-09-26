@@ -1,18 +1,18 @@
 {
   "resources/js/add_to_basket.css": {
-    "file": "assets/add_to_basket-d12719c0.css",
+    "file": "assets/add_to_basket-a39892c8.css",
     "src": "resources/js/add_to_basket.css"
   },
   "resources/js/add_to_basket.js": {
     "css": [
-      "assets/add_to_basket-d12719c0.css"
+      "assets/add_to_basket-a39892c8.css"
     ],
-    "file": "assets/add_to_basket-4e7738ab.js",
+    "file": "assets/add_to_basket-ba9ed55b.js",
     "isEntry": true,
     "src": "resources/js/add_to_basket.js"
   },
   "resources/js/cp.js": {
-    "file": "assets/cp-a0772b18.js",
+    "file": "assets/cp-eca4b7fc.js",
     "isEntry": true,
     "src": "resources/js/cp.js"
   }

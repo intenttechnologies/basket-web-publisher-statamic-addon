@@ -30,6 +30,7 @@ class BasketTags extends Tags
                 'id' => $item['id']
             ];
         }, $data['links']);
-        return '__BASKET__.shareModal({items:' . json_encode($parsed) . '})';
+        $name = config('add-to-basket.publisher_name');
+        return '__BASKET__.shareModal({items:' . json_encode($parsed) . ', name:"' . $name . '"})';
     }
 }
