@@ -1,5 +1,11 @@
 <?php
 
+/****************************************
+ * 
+ * SET VALUES IN .env NOT DIRECTLY HERE
+ * 
+ ****************************************/
+
 return [
     // development, staging or production
     // Set in .env not directly here
@@ -9,8 +15,10 @@ return [
     // Set in .env not directly here
     'api_key' => env('ADD_TO_BASKET_API_KEY', 'xxx'),
 
-    // If you have been assigned a publisher_name, set it here
-    'publisher_name' => env('PUBLISHER_NAME', 'default'),
+    // Set to your publisher_name if you have been assigned one
+    // Set in .env not directly here
+    'publisher_name' => env('ADD_TO_BASKET_PUBLISHER_NAME', 'default'),
 
+    // Only set for local development
     'basket_path' => env('ADD_TO_BASKET_PATH', 'https://%ENV%.trybasket.com/publisher')
 ];

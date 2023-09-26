@@ -1,6 +1,6 @@
 # Add To Basket
 
-> Statamic addon to enable adding an Add to Basket button on your website
+> Statamic addon to simplify adding an Add to Basket button on your website
 
 ## How to Install
 
@@ -8,7 +8,7 @@ Run this command from the root of your Statamic project
 
 ``` bash
 composer require basket/add-to-basket
-php artisan vendor:publish --tag=add-to-basket-config
+php artisan vendor:publish --tag=add-to-basket-config --force
 ```
 
 Add your api_key to the add-to-basket.php config or env file
