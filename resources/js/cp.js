@@ -1,5 +1,6 @@
 import { cleanUrl } from "./libs/url-cleaner.mjs";
 import { getItems, saveItems } from "./libs/saveToBasket";
+import { itemByUrl } from "./libs/itemByUrl";
 
 const TOAST_DELAY = 3000;
 
@@ -31,6 +32,8 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     return;
   }
 
+  const currentItemData = payload.values?.add_to_basket?.items;
+  // TODO use originalUrl from currentItemData if available
   const slug = payload.values.slug;
   const content = JSON.parse(payload.values.content);
 
@@ -97,9 +100,19 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
       basketId,
     });
 
+    const promises = linksFound.map(async (link) => {
+        const r = await itemByUrl({environment: ENV, apiKey: API_KEY, url: link});
+        const item = items.find(({id}) => id === r.id);
+        if (item) {
+            item.originalUrl = link;
+        }
+    })
+
+    await Promise.all(promises);
+
     const orderedItems = linksFound.reduce((prev, cur) => {
-      const match = items.find(({ url }) =>
-        decodeURIComponent(cur).includes(url)
+      const match = items.find(({ originalUrl }) =>
+      originalUrl === cur
       );
       if (match) {
         prev.push(match);
@@ -107,19 +120,13 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
       return prev;
     }, []);
 
-    const mapper = ({ title, url }) => ({ title, url });
-
-    // console.log(linksFound)
-    // console.log(items.map(mapper))
-    // console.log(orderedItems.map(mapper))
-    // reject("Nope");
-    // return;
+    const mapper = ({ title, url, originalUrl }) => ({ title, url, originalUrl });
 
     payload.values.add_to_basket = {
       enabled: payload.values.add_to_basket.enabled,
       basketId,
       userId,
-      items: items,
+      items: orderedItems,
     };
 
     clearInterval(toastInterval);

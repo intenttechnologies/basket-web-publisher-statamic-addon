@@ -27,7 +27,8 @@ class BasketTags extends Tags
         $parsed = array_map(function ($item) {
             return [
                 'url' => $item['url'],
-                'id' => $item['id']
+                'id' => $item['id'],
+                'originalUrl' => $item['originalUrl'],
             ];
         }, $data['items']);
         $name = config('add-to-basket.publisher_name');
