@@ -29,7 +29,7 @@ class BasketTags extends Tags
                 'url' => $item['url'],
                 'id' => $item['id']
             ];
-        }, $data['links']);
+        }, $data['items']);
         $name = config('add-to-basket.publisher_name');
         return '__BASKET__.shareModal({items:' . json_encode($parsed) . ', name:"' . $name . '"})';
     }
