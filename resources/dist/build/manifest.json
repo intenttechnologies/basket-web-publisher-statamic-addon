@@ -3,14 +3,14 @@
     "file": "assets/saveToBasket-d888618c.js"
   },
   "resources/js/add_to_basket.css": {
-    "file": "assets/add_to_basket-b9600ab4.css",
+    "file": "assets/add_to_basket-d648e871.css",
     "src": "resources/js/add_to_basket.css"
   },
   "resources/js/add_to_basket.js": {
     "css": [
-      "assets/add_to_basket-b9600ab4.css"
+      "assets/add_to_basket-d648e871.css"
     ],
-    "file": "assets/add_to_basket-5b8cbf55.js",
+    "file": "assets/add_to_basket-ddf82764.js",
     "imports": [
       "_saveToBasket-d888618c.js"
     ],

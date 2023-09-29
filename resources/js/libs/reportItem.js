@@ -23,7 +23,7 @@ export const reportItem = async ({ environment, apiKey, itemId }) => {
 export const unreportItem = async ({ environment, apiKey, itemId }) => {
   console.log("unreportItem", itemId);
   const result = await fetch(
-    getFunctionsUrl(environment, "publisher-item-unreport"),
+    getFunctionsUrl(environment, "publisher-item-unReport"),
     {
       method: "post",
       headers: new Headers({

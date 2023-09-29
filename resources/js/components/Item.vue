@@ -94,7 +94,7 @@
           @click="handleReportToggle"
         >
           <div v-if="saving" class="mx-1">
-            {{ isReported ? "Unreporting..." : "Reporting..." }}
+            {{ item.isReported ? "Unreporting..." : "Reporting..." }}
           </div>
           <div v-else class="flex items-center">
             <WarningIcon class="mr-2" />
