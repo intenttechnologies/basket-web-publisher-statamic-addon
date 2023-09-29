@@ -12,103 +12,41 @@
       </label>
       <div v-if="!enabled" class="mt-2 text-gray-700 text-sm">
         Add to Basket button will not be visible on the public website and
-        products will not be parsed from the page copy.
+        products will not be parsed from the Page Builder content.
       </div>
     </div>
     <div v-if="enabled">
-      <div v-if="value?.links && value.links.length > 0">
+      <div v-if="value.items.length > 0">
         <p class="text-sm mb-2">
-          The following products have been found in the page copy (updated on
-          save):
+          These products will be displayed in the Basket app:
         </p>
+        <Items
+          :items="goodItems"
+          :handleReportItem="handleReportItem"
+          :handleUnreportItem="handleUnreportItem"
+        />
 
-        <div
-          class="bg-white rounded-xl atb-border overflow-hidden flex flex-wrap"
-        >
-          <div
-            v-for="link in value?.links"
-            class="atb-link-item text-sm flex p-3 atb-border relative"
-          >
-            <div
-              class="atb-image-container shrink-0 rounded-xl overflow-hidden mr-4"
-            >
-              <img
-                class="atb-image"
-                :src="link?.image?.retailerUrl || link?.image?.cdnUrl"
-              />
-            </div>
+        <div v-if="fetchingItems.length > 0">
+          <p class="text-sm mb-2 mt-4">
+            These products are being fetched by Basket:
+          </p>
+          <Items
+            :items="fetchingItems"
+            :handleReportItem="handleReportItem"
+            :handleUnreportItem="handleUnreportItem"
+          />
+        </div>
 
-            <div class="atb-content grow min-w-0 flex flex-col">
-              <div
-                v-if="link?.status === 'fetching'"
-                class="text-gray-700 atb-f-13 bg-gray-300 rounded-md w-15 mb-1"
-              >
-                &nbsp;
-              </div>
-              <h4 v-else class="atb-title truncate font-semibold">
-                <span class="truncate">{{
-                  link?.status === "fetching"
-                    ? "..."
-                    : link?.title || "No title found"
-                }}</span>
-              </h4>
-              <div
-                v-if="link?.status === 'fetching'"
-                class="text-gray-700 atb-f-13 bg-gray-300 rounded-md w-10"
-              >
-                &nbsp;
-              </div>
-              <div
-                v-else-if="link?.type === 'non_retail'"
-                class="text-gray-700 atb-f-13"
-              >
-                &nbsp;
-              </div>
-              <div
-                v-else-if="link?.availability?.current?.status === 'soldOut'"
-                class="text-gray-700 atb-f-13"
-              >
-                Sold out
-              </div>
-              <div v-else-if="!link?.price" class="text-gray-700 atb-f-13">
-                No price found
-              </div>
-              <div v-else class="text-gray-700 atb-f-13">
-                {{ link?.currencySymbol }}{{ link?.price?.toFixed(2) }}
-              </div>
-              <div class="flex grow text-gray-700 items-end">
-                <div class="flex grow">
-                  <img
-                    class="atb-favicon mr-2"
-                    :src="link?.retailer?.faviconUrl"
-                  />
-                  <div class="atb-f-12 flex flex-col justify-center">
-                    <p>
-                      {{ link?.retailer?.tld?.replace("www.", "") }}
-                    </p>
-                    <div
-                      v-if="link.status === 'fetching'"
-                      class="atb-adding mt-1"
-                    >
-                      ADDING
-                    </div>
-                    <div
-                      v-else-if="link.type === 'non_retail'"
-                      class="atb-adding mt-1"
-                    >
-                      WEBPAGE
-                    </div>
-                  </div>
-                </div>
-                <a
-                  :href="link?.url"
-                  target="_blank"
-                  class="atb-button bg-gray-300 rounded-full px-3 py-1 text-blue font-semibold"
-                  >Visit</a
-                >
-              </div>
-            </div>
-          </div>
+        <div v-if="badItems.length > 0">
+          <p class="text-sm mb-2 mt-4">
+            These products will NOT be displayed in the Basket app:
+          </p>
+          <Items
+            :items="badItems"
+            isBad="true"
+            :handleReportItem="handleReportItem"
+            :handleUnreportItem="handleUnreportItem"
+          />
         </div>
       </div>
       <div v-else>
@@ -120,63 +58,10 @@
   </div>
 </template>
 
-<style scoped>
-.atb-image-container {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.atb-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: #eee;
-}
-.atb-link-item {
-  margin: -1px;
-  width: calc(100% + 2px);
-}
-@media (min-width: 1015px) {
-  .atb-link-item {
-    width: calc(50% + 2px);
-  }
-}
-.atb-border {
-  border: 1px solid #f0f0f0;
-}
-.atb-favicon {
-  width: 24px;
-  height: 24px;
-}
-.atb-eye {
-  right: 12px;
-}
-.atb-hidden {
-  background: rgba(244, 246, 249, 0.95);
-  left: 0px;
-  top: 0px;
-  border: 1px solid #e5e5e5;
-}
-.atb-f-13 {
-  font-size: 13px;
-}
-.atb-f-12 {
-  font-size: 12px;
-  line-height: 1;
-}
-.atb-button {
-  transition: 100ms background ease-in-out, 100ms color ease-in-out;
-}
-.atb-button:hover {
-  color: #777 !important;
-  background: #ddd !important;
-}
-.atb-adding {
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-</style>
+<script setup>
+import Items from "./Items.vue";
+import { reportItem, unreportItem } from "../libs/reportItem";
+</script>
 
 <script>
 export default {
@@ -187,25 +72,74 @@ export default {
       enabled: Boolean(this.value?.enabled),
     };
   },
+  computed: {
+    goodItems() {
+      return this.value.items.filter(
+        ({ status, type }) =>
+          (status === "ready" || status === "fixing") && type === "product"
+      );
+    },
+    badItems() {
+      return this.value.items.filter(
+        ({ status, type }) =>
+          !(status === "fetching") &&
+          !((status === "ready" || status === "fixing") && type === "product")
+      );
+    },
+    fetchingItems() {
+      return this.value.items.filter(({ status }) => status === "fetching");
+    },
+  },
   mounted() {
     this.update({
       enabled: this.enabled,
-      links: this.value?.links || [],
+      items: this.value?.items || [],
     });
+    console.log(
+      "bad",
+      this.badItems.map(({ id }) => id)
+    );
+    console.log(
+      "fetch",
+      this.fetchingItems.map(({ id }) => id)
+    );
   },
   methods: {
     toggle() {
       this.enabled = !this.enabled;
-      this.update({
-        enabled: this.enabled,
-        links: this.value?.links,
-      });
+      this.save();
     },
     save() {
       this.update({
         enabled: this.enabled,
-        links: this.value?.links,
+        items: this.value?.items,
       });
+    },
+    async handleReportItem(item) {
+      console.log("handleReportItem", item.id);
+      const environment = Statamic.$config.get("add-to-basket:environment");
+      const apiKey = Statamic.$config.get("add-to-basket:api_key");
+      try {
+        await reportItem({ itemId: item.id, environment, apiKey });
+        item.isReported = true;
+        this.save();
+      } catch {
+        console.error(`Failed to report item ${item.id}`);
+      }
+    },
+    async handleUnreportItem(item) {
+      console.log("handleUneportItem", item.id);
+      const environment = Statamic.$config.get("add-to-basket:environment");
+      const apiKey = Statamic.$config.get("add-to-basket:api_key");
+      try {
+        await unreportItem({ itemId: item.id, environment, apiKey });
+        item.isReported = false;
+        this.save();
+      } catch {
+        // TODO remove this debug
+        item.isReported = false;
+        console.error(`Failed to unreport item ${item.id}`);
+      }
     },
   },
 };

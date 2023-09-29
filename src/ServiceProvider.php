@@ -7,6 +7,8 @@ use Statamic\Events\EntrySaving;
 use Statamic\Providers\AddonServiceProvider;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 use Basket\AddToBasket\BasketFieldtype;
 
@@ -29,6 +31,11 @@ class ServiceProvider extends AddonServiceProvider
         'publicDirectory' => 'resources/dist',
     ];
 
+    // protected $routes = [
+    //     // for the control panel
+    //     'cp' => __DIR__.'/../routes/cp.php',
+    // ];
+
     public function bootAddon()
     {
         Statamic::provideToScript(
@@ -38,6 +45,20 @@ class ServiceProvider extends AddonServiceProvider
                 'add-to-basket:publisher_name' => config('add-to-basket.publisher_name')
             ]
         );
+
+        // $this->registerActionRoutes(function () {
+        //     Route::get('test', function (Request $request) {
+        //         Log::debug(">>> action route");
+        //         return response()->json(['result' => 'action:ok']); 
+        //     });
+        // });
+
+        // $this->registerCpRoutes(function () {
+        //     Route::get('test', function (Request $request) {
+        //         Log::debug(">>> action route");
+        //         return response()->json(['result' => 'cp:ok']); 
+        //     });
+        // });
     }
 
     protected function bootConfig()

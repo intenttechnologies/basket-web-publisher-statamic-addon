@@ -34,8 +34,6 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const slug = payload.values.slug;
   const content = JSON.parse(payload.values.content);
 
-  console.log(JSON.stringify(content, null, 2));
-
   let linksFound = [];
   try {
     linksFound = [
@@ -69,7 +67,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     console.log("> Nothing to save");
     payload.values.add_to_basket = {
       enabled: payload.values.add_to_basket.enabled,
-      links: [],
+      items: [],
     };
     resolve();
     return;
@@ -99,9 +97,29 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
       basketId,
     });
 
+    const orderedItems = linksFound.reduce((prev, cur) => {
+      const match = items.find(({ url }) =>
+        decodeURIComponent(cur).includes(url)
+      );
+      if (match) {
+        prev.push(match);
+      }
+      return prev;
+    }, []);
+
+    const mapper = ({ title, url }) => ({ title, url });
+
+    // console.log(linksFound)
+    // console.log(items.map(mapper))
+    // console.log(orderedItems.map(mapper))
+    // reject("Nope");
+    // return;
+
     payload.values.add_to_basket = {
       enabled: payload.values.add_to_basket.enabled,
-      links: items,
+      basketId,
+      userId,
+      items: items,
     };
 
     clearInterval(toastInterval);
