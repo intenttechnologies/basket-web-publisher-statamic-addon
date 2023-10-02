@@ -7,9 +7,10 @@
   >
     <div class="atb-image-container shrink-0 rounded-xl overflow-hidden mr-3">
       <img
+        @click="handleIdClick"
         class="atb-image"
-        v-if="item?.image?.cdnUrl || item?.image?.retailerUrl"
-        :src="item?.image?.cdnUrl || item?.image?.retailerUrl"
+        v-if="item.image?.cdnUrl || item.image?.retailerUrl"
+        :src="item.image?.cdnUrl || item.image?.retailerUrl"
       />
       <div v-else class="atb-image flex items-center justify-center">
         <WarningFilledIcon />
@@ -18,44 +19,44 @@
 
     <div class="atb-content grow min-w-0 flex flex-col">
       <div
-        v-if="item?.status === 'fetching'"
+        v-if="item.status === 'fetching'"
         class="text-gray-700 atb-f-13 bg-gray-300 rounded-md w-15 mb-1 mr-6"
       >
         &nbsp;
       </div>
       <h4 v-else class="atb-title truncate font-semibold mr-4">
         <span class="truncate">{{
-          item?.status === "fetching" ? "..." : item?.title || "No title found"
+          item.status === "fetching" ? "..." : item.title || "No title found"
         }}</span>
       </h4>
       <div
-        v-if="item?.status === 'fetching'"
+        v-if="item.status === 'fetching'"
         class="text-gray-700 atb-f-13 bg-gray-300 rounded-md w-10"
       >
         &nbsp;
       </div>
-      <div v-else-if="item?.type === 'non_retail'" class="atb-f-13 atb-error">
+      <div v-else-if="item.type === 'non_retail'" class="atb-f-13 atb-error">
         Non-product
       </div>
-      <div v-else-if="!item?.price" class="text-gray-700 atb-f-13 atb-error">
+      <div v-else-if="!item.price" class="text-gray-700 atb-f-13 atb-error">
         No price found
       </div>
       <div v-else class="text-gray-700 atb-f-13">
-        {{ item?.currencySymbol }}{{ item?.price?.toFixed(2) }}
+        {{ item.currencySymbol }}{{ item.price?.toFixed(2) }}
       </div>
       <div class="flex grow text-gray-700 items-end">
         <div class="flex grow">
-          <img class="atb-favicon mr-2" :src="item?.retailer?.faviconUrl" />
+          <img class="atb-favicon mr-2" :src="item.retailer?.faviconUrl" />
           <div class="atb-f-12 flex flex-col justify-center">
             <p>
-              {{ item?.retailer?.tld?.replace("www.", "") }}
+              {{ item.retailer?.tld?.replace("www.", "") }}
             </p>
             <div v-if="item.isReported" class="atb-adding mt-1">REPORTED</div>
             <div v-else-if="item.status === 'fetching'" class="atb-adding mt-1">
               ADDING
             </div>
             <div
-              v-else-if="item?.availability?.current?.status === 'soldOut'"
+              v-else-if="item.availability?.current?.status === 'soldOut'"
               class="atb-adding mt-1 atb-error"
             >
               SOLD OUT
@@ -63,8 +64,8 @@
             <div
               v-else-if="
                 !item.type === 'non_product' &&
-                !item?.image?.cdnUrl &&
-                !item?.image?.retailerUrl
+                !item.image?.cdnUrl &&
+                !item.image?.retailerUrl
               "
               class="atb-adding mt-1 atb-error"
             >
@@ -73,7 +74,7 @@
           </div>
         </div>
         <a
-          :href="item?.url"
+          :href="item.url"
           target="_blank"
           class="atb-button bg-gray-300 rounded-full px-3 py-1 text-blue font-semibold"
           >Visit</a
@@ -124,6 +125,9 @@ export default {
     };
   },
   methods: {
+    handleIdClick() {
+      navigator.clipboard.writeText(this.item.id);
+    },
     handleMenuToggle() {
       this.menuOpen = !this.menuOpen;
     },
@@ -142,7 +146,6 @@ export default {
       }
       this.saving = false;
       this.handleMenuClose();
-      console.log("done");
     },
   },
 };

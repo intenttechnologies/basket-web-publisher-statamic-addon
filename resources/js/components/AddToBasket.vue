@@ -61,6 +61,7 @@
 <script setup>
 import Items from "./Items.vue";
 import { reportItem, unreportItem } from "../libs/reportItem";
+import {log} from '../libs/log'
 </script>
 
 <script>
@@ -95,11 +96,11 @@ export default {
       enabled: this.enabled,
       items: this.value?.items || [],
     });
-    console.log(
+    log(
       "bad",
       this.badItems.map(({ id }) => id)
     );
-    console.log(
+    log(
       "fetch",
       this.fetchingItems.map(({ id }) => id)
     );
@@ -116,7 +117,7 @@ export default {
       });
     },
     async handleReportItem(item) {
-      console.log("handleReportItem", item.id);
+      log("handleReportItem", item.id);
       const environment = Statamic.$config.get("add-to-basket:environment");
       const apiKey = Statamic.$config.get("add-to-basket:api_key");
       try {
@@ -128,7 +129,7 @@ export default {
       }
     },
     async handleUnreportItem(item) {
-      console.log("handleUneportItem", item.id);
+      log("handleUneportItem", item.id);
       const environment = Statamic.$config.get("add-to-basket:environment");
       const apiKey = Statamic.$config.get("add-to-basket:api_key");
       try {

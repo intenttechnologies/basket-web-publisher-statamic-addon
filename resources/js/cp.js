@@ -1,6 +1,7 @@
 import { cleanUrl } from "./libs/url-cleaner.mjs";
 import { getItems, saveItems } from "./libs/saveToBasket";
 import { itemByUrl } from "./libs/itemByUrl";
+import { log } from "./libs/log";
 
 const TOAST_DELAY = 3000;
 
@@ -24,10 +25,10 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const API_KEY = Statamic.$config.get("add-to-basket:api_key");
   let currentToastMessage = 0;
 
-  console.log("Add to Basket");
+  log("Add to Basket");
 
   if (!payload.values?.add_to_basket?.enabled) {
-    console.log("> Not enabled");
+    log("> Not enabled");
     resolve();
     return;
   }
@@ -67,7 +68,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   }
 
   if (linksFound.length < 1) {
-    console.log("> Nothing to save");
+    log("> Nothing to save");
     payload.values.add_to_basket = {
       enabled: payload.values.add_to_basket.enabled,
       items: [],
@@ -101,26 +102,32 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     });
 
     const promises = linksFound.map(async (link) => {
-        const r = await itemByUrl({environment: ENV, apiKey: API_KEY, url: link});
-        const item = items.find(({id}) => id === r.id);
-        if (item) {
-            item.originalUrl = link;
-        }
-    })
+      const r = await itemByUrl({
+        environment: ENV,
+        apiKey: API_KEY,
+        url: link,
+      });
+      const item = items.find(({ id }) => id === r.id);
+      if (item) {
+        item.originalUrl = link;
+      }
+    });
 
     await Promise.all(promises);
 
     const orderedItems = linksFound.reduce((prev, cur) => {
-      const match = items.find(({ originalUrl }) =>
-      originalUrl === cur
-      );
+      const match = items.find(({ originalUrl }) => originalUrl === cur);
       if (match) {
         prev.push(match);
       }
       return prev;
     }, []);
 
-    const mapper = ({ title, url, originalUrl }) => ({ title, url, originalUrl });
+    const mapper = ({ title, url, originalUrl }) => ({
+      title,
+      url,
+      originalUrl,
+    });
 
     payload.values.add_to_basket = {
       enabled: payload.values.add_to_basket.enabled,
@@ -132,7 +139,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     clearInterval(toastInterval);
     resolve();
   } catch (err) {
-    console.log(err);
+    log(err);
     clearInterval(toastInterval);
     reject("An error occured in Add to Basket");
   }

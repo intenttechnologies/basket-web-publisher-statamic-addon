@@ -42,7 +42,8 @@ class ServiceProvider extends AddonServiceProvider
             [
                 'add-to-basket:environment' => config('add-to-basket.environment'),
                 'add-to-basket:api_key' => config('add-to-basket.api_key'),
-                'add-to-basket:publisher_name' => config('add-to-basket.publisher_name')
+                'add-to-basket:publisher_name' => config('add-to-basket.publisher_name'),
+                'add-to-basket:enable_debug_log' => config('add-to-basket.enable_debug_log'),
             ]
         );
 

@@ -1,7 +1,8 @@
+import { log } from "./log";
 import { getFunctionsUrl } from "./saveToBasket";
 
 export const reportItem = async ({ environment, apiKey, itemId }) => {
-  console.log("reportItem", itemId);
+  log("reportItem", itemId);
   const result = await fetch(
     getFunctionsUrl(environment, "publisher-item-report"),
     {
@@ -15,13 +16,13 @@ export const reportItem = async ({ environment, apiKey, itemId }) => {
     .then((r) => r.json())
     .then((r) => r.result);
 
-  console.log("reportItem result", result);
+  log("reportItem result", result);
 
   return result;
 };
 
 export const unreportItem = async ({ environment, apiKey, itemId }) => {
-  console.log("unreportItem", itemId);
+  log("unreportItem", itemId);
   const result = await fetch(
     getFunctionsUrl(environment, "publisher-item-unReport"),
     {
@@ -35,6 +36,6 @@ export const unreportItem = async ({ environment, apiKey, itemId }) => {
     .then((r) => r.json())
     .then((r) => r.result);
 
-  console.log("unreportItem result", result);
+  log("unreportItem result", result);
   return result;
 };

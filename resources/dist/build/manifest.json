@@ -1,26 +1,26 @@
 {
-  "_saveToBasket-c2a1230f.js": {
-    "file": "assets/saveToBasket-c2a1230f.js"
+  "_saveToBasket-67cf2171.js": {
+    "file": "assets/saveToBasket-67cf2171.js"
   },
   "resources/js/add_to_basket.css": {
-    "file": "assets/add_to_basket-d648e871.css",
+    "file": "assets/add_to_basket-3e9e54a7.css",
     "src": "resources/js/add_to_basket.css"
   },
   "resources/js/add_to_basket.js": {
     "css": [
-      "assets/add_to_basket-d648e871.css"
+      "assets/add_to_basket-3e9e54a7.css"
     ],
-    "file": "assets/add_to_basket-f15e3658.js",
+    "file": "assets/add_to_basket-e0c729b1.js",
     "imports": [
-      "_saveToBasket-c2a1230f.js"
+      "_saveToBasket-67cf2171.js"
     ],
     "isEntry": true,
     "src": "resources/js/add_to_basket.js"
   },
   "resources/js/cp.js": {
-    "file": "assets/cp-39f8b6a3.js",
+    "file": "assets/cp-a7333c70.js",
     "imports": [
-      "_saveToBasket-c2a1230f.js"
+      "_saveToBasket-67cf2171.js"
     ],
     "isEntry": true,
     "src": "resources/js/cp.js"

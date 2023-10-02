@@ -1,7 +1,8 @@
+import { log } from "./log";
 import { getFunctionsUrl } from "./saveToBasket";
 
 export const itemByUrl = async ({ environment, apiKey, url }) => {
-  console.log("itemByUrl", url);
+  log("itemByUrl", url);
   const result = await fetch(
     getFunctionsUrl(environment, "publisher-item-retrieveByUrl"),
     {
@@ -15,7 +16,7 @@ export const itemByUrl = async ({ environment, apiKey, url }) => {
     .then((r) => r.json())
     .then((r) => r.result);
 
-  console.log("itemByUrl result", result);
+  log("itemByUrl result", result);
 
   return result;
 };

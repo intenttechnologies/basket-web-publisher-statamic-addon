@@ -20,5 +20,8 @@ return [
     'publisher_name' => env('ADD_TO_BASKET_PUBLISHER_NAME', 'default'),
 
     // Only set for local development
-    'basket_path' => env('ADD_TO_BASKET_PATH', 'https://%ENV%.trybasket.com/publisher')
+    'basket_path' => env('ADD_TO_BASKET_PATH', 'https://%ENV%.trybasket.com/publisher'),
+
+    // Debug logging
+    'enable_debug_log' => env('ADD_TO_BASKET_ENABLE_DEBUG_LOG', false)
 ];
