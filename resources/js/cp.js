@@ -1,6 +1,6 @@
 import { cleanUrl } from "./libs/url-cleaner.mjs";
 import { getItems, saveItems } from "./libs/saveToBasket";
-import { itemByUrl } from "./libs/itemByUrl";
+import { getItemsByUrl } from "./libs/getItemByUrl";
 import { log } from "./libs/log";
 
 const TOAST_DELAY = 3000;
@@ -16,7 +16,7 @@ const addCleanedUrl = (type, url, prev) => {
     const cleaned = cleanUrl(url);
     prev.add(cleaned.url);
   } catch (e) {
-    throw `A ${type} purchase link URL field contains invalid text: ${url}`;
+    throw `A ${type} URL field contains invalid text: ${url}`;
   }
 };
 
@@ -95,26 +95,28 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
       urls: linksFound,
       basketName: slug,
     });
+
+    // get item data
     const items = await getItems({
       environment: ENV,
       userId,
       basketId,
     });
 
-    const promises = linksFound.map(async (link) => {
-      const r = await itemByUrl({
-        environment: ENV,
-        apiKey: API_KEY,
-        url: link,
-      });
-      const item = items.find(({ id }) => id === r.id);
+    // add originalUrl
+    const itemsByUrl = await getItemsByUrl({
+      environment: ENV,
+      apiKey: API_KEY,
+      urls: linksFound,
+    });
+    itemsByUrl.forEach(({ id, originalUrl }) => {
+      const item = items.find((item) => item.id === id);
       if (item) {
-        item.originalUrl = link;
+        item.originalUrl = originalUrl;
       }
     });
 
-    await Promise.all(promises);
-
+    // order according to links on page
     const orderedItems = linksFound.reduce((prev, cur) => {
       const match = items.find(({ originalUrl }) => originalUrl === cur);
       if (match) {

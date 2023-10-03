@@ -1,8 +1,8 @@
 import { log } from "./log";
 import { getFunctionsUrl } from "./saveToBasket";
 
-export const itemByUrl = async ({ environment, apiKey, url }) => {
-  log("itemByUrl", url);
+export const getItemsByUrl = async ({ environment, apiKey, urls }) => {
+  log("itemsByUrl", urls);
   const result = await fetch(
     getFunctionsUrl(environment, "publisher-item-retrieveByUrl"),
     {
@@ -10,13 +10,13 @@ export const itemByUrl = async ({ environment, apiKey, url }) => {
       headers: new Headers({
         "Content-Type": "application/json",
       }),
-      body: JSON.stringify({ data: { url, apiKey } }),
+      body: JSON.stringify({ data: { urls, apiKey } }),
     }
   )
     .then((r) => r.json())
-    .then((r) => r.result);
+    .then((r) => r.result.pages);
 
-  log("itemByUrl result", result);
+  log("itemsByUrl result", JSON.stringify(result, null, 2));
 
   return result;
 };
