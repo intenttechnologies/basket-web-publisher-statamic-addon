@@ -18,8 +18,6 @@ export const saveItems = async ({ environment, apiKey, urls, basketName }) => {
     .then((r) => r.json())
     .then((r) => r.result);
 
-  log("saveItems result", result);
-
   return result;
 };
 
@@ -34,8 +32,6 @@ export const getItems = async ({ environment, userId, basketId }) => {
   })
     .then((r) => r.json())
     .then((r) => r.result);
-
-  log("getItems result", JSON.stringify(result, null, 2));
 
   return result;
 };

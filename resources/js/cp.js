@@ -24,17 +24,17 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const ENV = Statamic.$config.get("add-to-basket:environment");
   const API_KEY = Statamic.$config.get("add-to-basket:api_key");
   let currentToastMessage = 0;
+  const data = payload.values?.add_to_basket;
 
   log("Add to Basket");
 
-  if (!payload.values?.add_to_basket?.enabled) {
-    log("> Not enabled");
+  if (!data?.enabled) {
+    log("Not enabled");
     resolve();
     return;
   }
 
-  const currentItemData = payload.values?.add_to_basket?.items;
-  // TODO use originalUrl from currentItemData if available
+  const currentItemData = data?.items;
   const slug = payload.values.slug;
   const content = JSON.parse(payload.values.content);
 
@@ -68,7 +68,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   }
 
   if (linksFound.length < 1) {
-    log("> Nothing to save");
+    log("Nothing to save");
     payload.values.add_to_basket = {
       enabled: payload.values.add_to_basket.enabled,
       items: [],
@@ -89,12 +89,29 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   Statamic.$toast.info(TOAST_MESSAGES[0], { duration: TOAST_DELAY });
 
   try {
-    const { userId, basketId } = await saveItems({
-      environment: ENV,
-      apiKey: API_KEY,
-      urls: linksFound,
-      basketName: slug,
-    });
+    const saveIfRequired = async () => {
+      const isSaveRequired = linksFound.some(
+        (link) =>
+          !currentItemData.some(({ originalUrl }) => originalUrl === link)
+      );
+      log("isSaveRequired", isSaveRequired);
+      if (isSaveRequired) {
+        const { userId, basketId } = await saveItems({
+          environment: ENV,
+          apiKey: API_KEY,
+          urls: linksFound,
+          basketName: slug,
+        });
+
+        return { userId, basketId };
+      }
+
+      return {
+        userId: data.userId,
+        basketId: data.basketId,
+      };
+    };
+    const { userId, basketId } = await saveIfRequired();
 
     // get item data
     const items = await getItems({

@@ -5,9 +5,11 @@
       'atb-bad': isBad,
     }"
   >
-    <div class="atb-image-container shrink-0 rounded-xl overflow-hidden mr-3">
+    <div
+      class="atb-image-container shrink-0 rounded-xl overflow-hidden mr-3"
+      @click="handleIdClick"
+    >
       <img
-        @click="handleIdClick"
         class="atb-image"
         v-if="item.image?.cdnUrl || item.image?.retailerUrl"
         :src="item.image?.cdnUrl || item.image?.retailerUrl"
@@ -38,9 +40,22 @@
       <div v-else-if="item.type === 'non_retail'" class="atb-f-13 atb-error">
         Non-product
       </div>
-      <div v-else-if="!item.price" class="text-gray-700 atb-f-13 atb-error">
-        No price found
+      <div
+        v-else-if="item.availability?.current?.status === 'soldOut'"
+        class="atb-error"
+      >
+        Sold out
       </div>
+      <div
+        v-else-if="item.availability?.current?.status === 'outOfStock'"
+        class="atb-error"
+      >
+        Out of stock
+      </div>
+      <div
+        v-else-if="!item.price"
+        class="text-gray-700 atb-f-13 atb-error"
+      ></div>
       <div v-else class="text-gray-700 atb-f-13">
         {{ item.currencySymbol }}{{ item.price?.toFixed(2) }}
       </div>
@@ -54,12 +69,6 @@
             <div v-if="item.isReported" class="atb-adding mt-1">REPORTED</div>
             <div v-else-if="item.status === 'fetching'" class="atb-adding mt-1">
               ADDING
-            </div>
-            <div
-              v-else-if="item.availability?.current?.status === 'soldOut'"
-              class="atb-adding mt-1 atb-error"
-            >
-              SOLD OUT
             </div>
             <div
               v-else-if="

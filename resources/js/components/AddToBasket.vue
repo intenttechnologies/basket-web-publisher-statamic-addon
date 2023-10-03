@@ -28,7 +28,10 @@
 
         <div v-if="fetchingItems.length > 0">
           <p class="text-sm mb-2 mt-4">
-            These products are being fetched by Basket:
+            These products are being fetched by Basket: 
+            <button @click="refetch" class="atb-button bg-gray-300 rounded-full px-2 py-1 text-blue text-xs font-semibold">
+              {{ refetching ? "Refetching..." : "Refetch" }}
+            </button>
           </p>
           <Items
             :items="fetchingItems"
@@ -61,7 +64,8 @@
 <script setup>
 import Items from "./Items.vue";
 import { reportItem, unreportItem } from "../libs/reportItem";
-import {log} from '../libs/log'
+import { log } from "../libs/log";
+import { getItems } from "../libs/saveToBasket";
 </script>
 
 <script>
@@ -71,6 +75,7 @@ export default {
   data() {
     return {
       enabled: Boolean(this.value?.enabled),
+      refetching: false
     };
   },
   computed: {
@@ -95,7 +100,10 @@ export default {
     this.update({
       enabled: this.enabled,
       items: this.value?.items || [],
+      basketId: this.value?.basketId,
+      userId: this.value?.userId,
     });
+    this.refetch();
     log(
       "bad",
       this.badItems.map(({ id }) => id)
@@ -106,6 +114,24 @@ export default {
     );
   },
   methods: {
+    async refetch() {
+      if (!this.value?.basketId) {
+        log("Nothing to fetch");
+        return;
+      }
+      this.refetching = true;
+      const environment = Statamic.$config.get("add-to-basket:environment");
+      const refetchedItems = await getItems({
+        environment,
+        basketId: this.value?.basketId,
+        userId: this.value?.userId,
+      });
+      this.value.items = this.value.items.map((item) => ({
+        ...item,
+        ...refetchedItems.find(({ id }) => id === item.id),
+      }));
+      this.refetching = false;
+    },
     toggle() {
       this.enabled = !this.enabled;
       this.save();

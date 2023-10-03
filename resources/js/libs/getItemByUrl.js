@@ -16,7 +16,5 @@ export const getItemsByUrl = async ({ environment, apiKey, urls }) => {
     .then((r) => r.json())
     .then((r) => r.result.pages);
 
-  log("itemsByUrl result", JSON.stringify(result, null, 2));
-
   return result;
 };
