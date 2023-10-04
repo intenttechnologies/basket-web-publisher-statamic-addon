@@ -28,8 +28,11 @@
 
         <div v-if="fetchingItems.length > 0">
           <p class="text-sm mb-2 mt-4">
-            These products are being fetched by Basket: 
-            <button @click="refetch" class="atb-button bg-gray-300 rounded-full px-2 py-1 text-blue text-xs font-semibold">
+            These products are being fetched by Basket:
+            <button
+              @click="refetch"
+              class="atb-button bg-gray-300 rounded-full px-2 py-1 text-blue text-xs font-semibold"
+            >
               {{ refetching ? "Refetching..." : "Refetch" }}
             </button>
           </p>
@@ -75,25 +78,29 @@ export default {
   data() {
     return {
       enabled: Boolean(this.value?.enabled),
-      refetching: false
+      refetching: false,
     };
   },
   computed: {
     goodItems() {
-      return this.value.items.filter(
-        ({ status, type }) =>
-          (status === "ready" || status === "fixing") && type === "product"
+      return (
+        this.value?.items?.filter(
+          ({ status, type }) =>
+            (status === "ready" || status === "fixing") && type === "product"
+        ) || []
       );
     },
     badItems() {
-      return this.value.items.filter(
-        ({ status, type }) =>
-          !(status === "fetching") &&
-          !((status === "ready" || status === "fixing") && type === "product")
+      return (
+        this.value?.items?.filter(
+          ({ status, type }) =>
+            !(status === "fetching") &&
+            !((status === "ready" || status === "fixing") && type === "product")
+        ) || []
       );
     },
     fetchingItems() {
-      return this.value.items.filter(({ status }) => status === "fetching");
+      return this.value?.items?.filter(({ status }) => status === "fetching") || [];
     },
   },
   mounted() {
@@ -104,14 +111,6 @@ export default {
       userId: this.value?.userId,
     });
     this.refetch();
-    log(
-      "bad",
-      this.badItems.map(({ id }) => id)
-    );
-    log(
-      "fetch",
-      this.fetchingItems.map(({ id }) => id)
-    );
   },
   methods: {
     async refetch() {
