@@ -3,14 +3,14 @@
     "file": "assets/saveToBasket-41ea4bcb.js"
   },
   "resources/js/add_to_basket.css": {
-    "file": "assets/add_to_basket-05189ee6.css",
+    "file": "assets/add_to_basket-764f109a.css",
     "src": "resources/js/add_to_basket.css"
   },
   "resources/js/add_to_basket.js": {
     "css": [
-      "assets/add_to_basket-05189ee6.css"
+      "assets/add_to_basket-764f109a.css"
     ],
-    "file": "assets/add_to_basket-dbf4b0e2.js",
+    "file": "assets/add_to_basket-07fc1304.js",
     "imports": [
       "_saveToBasket-41ea4bcb.js"
     ],
@@ -18,7 +18,7 @@
     "src": "resources/js/add_to_basket.js"
   },
   "resources/js/cp.js": {
-    "file": "assets/cp-4723f01e.js",
+    "file": "assets/cp-c5c9fbb3.js",
     "imports": [
       "_saveToBasket-41ea4bcb.js"
     ],

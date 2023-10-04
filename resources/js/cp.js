@@ -113,6 +113,8 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     };
     const { userId, basketId } = await saveIfRequired();
 
+    log(userId, basketId)
+
     // get item data
     const items = await getItems({
       environment: ENV,

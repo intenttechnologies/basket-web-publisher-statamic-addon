@@ -53,6 +53,12 @@
         Out of stock
       </div>
       <div
+        v-else-if="item.availability?.current?.status === 'discontinued'"
+        class="atb-error"
+      >
+        Discontinued
+      </div>
+      <div
         v-else-if="!item.price"
         class="text-gray-700 atb-f-13 atb-error"
       ></div>
