@@ -45,7 +45,6 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
         const values = curr?.attrs?.values;
 
         if (
-          curr.type === "set" &&
           values?.type === "button" &&
           RegExp(/^Buy now/).test(values?.text) &&
           values?.url
@@ -54,8 +53,20 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
         }
 
         if (values?.type === "product" && values?.buy_links?.length > 0) {
-          values.buy_links.forEach((buyLink) =>
-            addCleanedUrl("product buy link", buyLink.url, prev)
+          values.buy_links.forEach(({ url }) =>
+            addCleanedUrl("product buy link", url, prev)
+          );
+        }
+
+        if (values?.type === "product_grid" && values?.products?.length > 0) {
+          values.products.forEach(({url}) =>
+            addCleanedUrl("product_grid url", url, prev)
+          );
+        }
+
+        if (values?.type === "product_carousel" && values?.products?.length > 0) {
+          values.products.forEach(({url}) =>
+            addCleanedUrl("product_carousel url", url, prev)
           );
         }
 
@@ -66,6 +77,8 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     reject(e);
     return;
   }
+
+  log(linksFound);
 
   if (linksFound.length < 1) {
     log("Nothing to save");
