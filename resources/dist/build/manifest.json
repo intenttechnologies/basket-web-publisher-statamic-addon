@@ -18,7 +18,7 @@
     "src": "resources/js/add_to_basket.js"
   },
   "resources/js/cp.js": {
-    "file": "assets/cp-25158c86.js",
+    "file": "assets/cp-30b42b18.js",
     "imports": [
       "_saveToBasket-41ea4bcb.js"
     ],

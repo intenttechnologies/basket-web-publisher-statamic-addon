@@ -38,6 +38,8 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const slug = payload.values.slug;
   const content = JSON.parse(payload.values.content);
 
+  const buyNowRegex = RegExp(/^Buy now/);
+
   let linksFound = [];
   try {
     linksFound = [
@@ -45,29 +47,40 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
         const values = curr?.attrs?.values;
 
         if (
-          values?.type === "button" &&
-          RegExp(/^Buy now/).test(values?.text) &&
+          (values?.type === "button" || values?.type === "call_to_action") &&
+          buyNowRegex.test(values?.text) &&
           values?.url
         ) {
           addCleanedUrl(values.type, values.url, prev);
-        }
-
-        if (values?.type === "product" && values?.buy_links?.length > 0) {
+        } else if (
+          values?.type === "product" &&
+          values?.buy_links?.length > 0
+        ) {
           values.buy_links.forEach(({ url }) =>
             addCleanedUrl("product buy link", url, prev)
           );
-        }
-
-        if (values?.type === "product_grid" && values?.products?.length > 0) {
-          values.products.forEach(({url}) =>
+        } else if (
+          values?.type === "product_grid" &&
+          values?.products?.length > 0
+        ) {
+          values.products.forEach(({ url }) =>
             addCleanedUrl("product_grid url", url, prev)
           );
-        }
-
-        if (values?.type === "product_carousel" && values?.products?.length > 0) {
-          values.products.forEach(({url}) =>
+        } else if (
+          values?.type === "product_carousel" &&
+          values?.products?.length > 0
+        ) {
+          values.products.forEach(({ url }) =>
             addCleanedUrl("product_carousel url", url, prev)
           );
+        } else if (values?.type === "product_quote" && values?.button_url) {
+          addCleanedUrl("product_quote button_url", values?.button_url, prev);
+        } else if (values?.type === "link_grid" && values?.links?.length > 0) {
+          values.links.forEach(({ url, title }) => {
+            if (buyNowRegex.test(title)) {
+              addCleanedUrl("link_grid url", url, prev);
+            }
+          });
         }
 
         return prev;
@@ -126,7 +139,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     };
     const { userId, basketId } = await saveIfRequired();
 
-    log(userId, basketId)
+    log(userId, basketId);
 
     // get item data
     const items = await getItems({
