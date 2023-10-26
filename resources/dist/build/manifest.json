@@ -2,6 +2,11 @@
   "_saveToBasket-41ea4bcb.js": {
     "file": "assets/saveToBasket-41ea4bcb.js"
   },
+  "resources/css/add-to-basket-button.css": {
+    "file": "assets/add-to-basket-button-a585d547.css",
+    "isEntry": true,
+    "src": "resources/css/add-to-basket-button.css"
+  },
   "resources/js/add_to_basket.css": {
     "file": "assets/add_to_basket-764f109a.css",
     "src": "resources/js/add_to_basket.css"

@@ -3,15 +3,7 @@
 namespace Basket\AddToBasket;
 
 use Statamic\Statamic;
-use Statamic\Events\EntrySaving;
 use Statamic\Providers\AddonServiceProvider;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-
-use Basket\AddToBasket\BasketFieldtype;
-
 
 class ServiceProvider extends AddonServiceProvider
 {
@@ -26,15 +18,10 @@ class ServiceProvider extends AddonServiceProvider
     protected $vite = [
         'input' => [
             'resources/js/cp.js',
-            'resources/js/add_to_basket.js'
+            'resources/js/add_to_basket.js',
         ],
         'publicDirectory' => 'resources/dist',
     ];
-
-    // protected $routes = [
-    //     // for the control panel
-    //     'cp' => __DIR__.'/../routes/cp.php',
-    // ];
 
     public function bootAddon()
     {
@@ -46,20 +33,6 @@ class ServiceProvider extends AddonServiceProvider
                 'add-to-basket:enable_debug_log' => config('add-to-basket.enable_debug_log'),
             ]
         );
-
-        // $this->registerActionRoutes(function () {
-        //     Route::get('test', function (Request $request) {
-        //         Log::debug(">>> action route");
-        //         return response()->json(['result' => 'action:ok']); 
-        //     });
-        // });
-
-        // $this->registerCpRoutes(function () {
-        //     Route::get('test', function (Request $request) {
-        //         Log::debug(">>> action route");
-        //         return response()->json(['result' => 'cp:ok']); 
-        //     });
-        // });
     }
 
     protected function bootConfig()
