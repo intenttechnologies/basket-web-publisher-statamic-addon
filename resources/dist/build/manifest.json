@@ -10,7 +10,7 @@
     "css": [
       "assets/add_to_basket-764f109a.css"
     ],
-    "file": "assets/add_to_basket-57e8e6b6.js",
+    "file": "assets/add_to_basket-73f4f586.js",
     "imports": [
       "_saveToBasket-41ea4bcb.js"
     ],
@@ -18,7 +18,7 @@
     "src": "resources/js/add_to_basket.js"
   },
   "resources/js/cp.js": {
-    "file": "assets/cp-30b42b18.js",
+    "file": "assets/cp-8ca41dad.js",
     "imports": [
       "_saveToBasket-41ea4bcb.js"
     ],

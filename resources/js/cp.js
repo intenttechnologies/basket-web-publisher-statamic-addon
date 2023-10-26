@@ -27,6 +27,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const data = payload.values?.add_to_basket;
 
   log("Add to Basket");
+  // reject();
 
   if (!data?.enabled) {
     log("Not enabled");
@@ -121,7 +122,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
           !currentItemData.some(({ originalUrl }) => originalUrl === link)
       );
       log("isSaveRequired", isSaveRequired);
-      if (isSaveRequired) {
+      if (isSaveRequired || !data.userId || !data.basketId) {
         const { userId, basketId } = await saveItems({
           environment: ENV,
           apiKey: API_KEY,

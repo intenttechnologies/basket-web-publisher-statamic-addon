@@ -139,6 +139,8 @@ export default {
       this.update({
         enabled: this.enabled,
         items: this.value?.items,
+        basketId: this.value?.basketId,
+        userId: this.value?.userId, 
       });
     },
     async handleReportItem(item) {
@@ -162,8 +164,6 @@ export default {
         item.isReported = false;
         this.save();
       } catch {
-        // TODO remove this debug
-        item.isReported = false;
         console.error(`Failed to unreport item ${item.id}`);
       }
     },
