@@ -1,6 +1,6 @@
 .basket-atb-button {
   margin-right: 10px;
-  padding: 10px 16px;
+  padding: 10px 16px 10px 12px;
   background-color: #ff058212;
   appearance: none;
   border: none;
@@ -18,8 +18,8 @@
   color: #fd5678;
 
   .basket-atb-button-logo {
-    height: 20px;
-    width: 20px;
+    height: 24px;
+    width: 24px;
     margin-right: 8px;
   }
 }

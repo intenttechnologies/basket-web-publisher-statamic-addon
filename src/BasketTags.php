@@ -21,7 +21,7 @@ class BasketTags extends Tags
     public function styleSrc(): string
     {
         $manifest = json_decode(file_get_contents($this->assetsFolder . 'manifest.json'), true);
-        return $this->assetsFolder . $manifest['resources/css/add-to-basket-button.css']['file'];
+        return "/". $this->assetsFolder . $manifest['resources/css/add-to-basket-button.css']['file'];
     }
 
     public function styleTag(): string
