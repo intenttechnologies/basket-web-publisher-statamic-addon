@@ -47,6 +47,7 @@ class BasketTags extends Tags
                 'url' => $item['url'],
                 'id' => $item['id'],
                 'originalUrl' => $item['originalUrl'],
+                'cmsUrl' => isset($item['cmsUrl']) ? $item['cmsUrl'] : null,
             ];
         }, $data['items']);
         $name = config('add-to-basket.publisher_name');

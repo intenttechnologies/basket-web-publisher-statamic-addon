@@ -1,4 +1,4 @@
-import { cleanUrl } from "./libs/url-cleaner.mjs";
+import { cleanUrl } from "@intenttechnologies/url-cleaner";
 import { getItems, saveItems } from "./libs/saveToBasket";
 import { getItemsByUrl } from "./libs/getItemByUrl";
 import { log } from "./libs/log";
@@ -13,12 +13,16 @@ const TOAST_MESSAGES = [
 
 const addCleanedUrl = (type, url, prev) => {
   try {
-    const cleaned = cleanUrl(url);
-    prev.add(cleaned.url);
+    const cleaned = cleanUrl(url.trim());
+    log(url.trim(), cleaned);
+    prev.add({ cmsUrl: url, cleanedUrl: cleaned.url });
   } catch (e) {
     throw `A ${type} URL field contains invalid text: ${url}`;
   }
 };
+
+const gpIdRegex = /gp\/product\/([A-Z0-9]{9,})/;
+const dpIdRegex = /dp\/([A-Z0-9]{9,})/;
 
 Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const ENV = Statamic.$config.get("add-to-basket:environment");
@@ -118,15 +122,15 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   try {
     const saveIfRequired = async () => {
       const isSaveRequired = linksFound.some(
-        (link) =>
-          !currentItemData.some(({ originalUrl }) => originalUrl === link)
+        ({ cleanedUrl }) =>
+          !currentItemData.some(({ originalUrl }) => originalUrl === cleanedUrl)
       );
       log("isSaveRequired", isSaveRequired);
       if (isSaveRequired || !data.userId || !data.basketId) {
         const { userId, basketId } = await saveItems({
           environment: ENV,
           apiKey: API_KEY,
-          urls: linksFound,
+          urls: linksFound.map(({cleanedUrl}) => cleanedUrl),
           basketName: slug,
         });
 
@@ -153,18 +157,25 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     const itemsByUrl = await getItemsByUrl({
       environment: ENV,
       apiKey: API_KEY,
-      urls: linksFound,
+      urls: linksFound.map(({cleanedUrl}) => cleanedUrl),
     });
     itemsByUrl.forEach(({ id, originalUrl }) => {
       const item = items.find((item) => item.id === id);
       if (item) {
+        const amznId = originalUrl.match(dpIdRegex);
         item.originalUrl = originalUrl;
+        if (amznId) {
+          const gpLink = linksFound.find(({cmsUrl}) => gpIdRegex.test(cmsUrl) && cmsUrl.includes(amznId[1]))
+          if (gpLink) {
+            item.cmsUrl = gpLink.cmsUrl;
+          }
+        }
       }
     });
 
     // order according to links on page
     const orderedItems = linksFound.reduce((prev, cur) => {
-      const match = items.find(({ originalUrl }) => originalUrl === cur);
+      const match = items.find(({ originalUrl }) => originalUrl === cur.cleanedUrl);
       if (match) {
         prev.push(match);
       }
