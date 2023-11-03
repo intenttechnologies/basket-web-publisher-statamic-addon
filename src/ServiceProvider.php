@@ -37,18 +37,31 @@ class ServiceProvider extends AddonServiceProvider
 
     protected function bootConfig()
     {
-        $filename = $this->getAddon()->slug();
         $directory = $this->getAddon()->directory();
-        $origin = "{$directory}config/{$filename}.php";
+        $slug = $this->getAddon()->slug();
 
-        if (!$this->config || !file_exists($origin)) {
-            return $this;
-        }
-
-        $this->publishes([
-            $origin => config_path("{$filename}.php"),
-        ], "{$filename}-config");
+        $this->publishTemplate($slug, $directory);
+        $this->publishConfig($slug, $directory);
 
         return $this;
+    }
+
+    protected function publishTemplate($slug, $directory)
+    {
+        $filename = "add-to-basket-button.blade.php";
+        $origin = "{$directory}resources/templates/{$filename}";
+
+        $this->publishes([
+            $origin => resource_path("views/vendor/basket/{$filename}"),
+        ], "{$slug}-template");
+    }
+
+    protected function publishConfig($slug, $directory)
+    {
+        $origin = "{$directory}config/{$slug}.php";
+
+        $this->publishes([
+            $origin => config_path("{$slug}.php"),
+        ], "{$slug}-config");
     }
 }

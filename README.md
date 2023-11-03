@@ -9,6 +9,7 @@ Run this command from the root of your Statamic project
 ``` bash
 composer require basket/add-to-basket
 php artisan vendor:publish --tag=add-to-basket-config --force
+php artisan vendor:publish --tag=add-to-basket-template --force
 ```
 
 Add your api_key to env file
