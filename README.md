@@ -24,6 +24,8 @@ Set the environment to either `staging` when testing or `production`
 ADD_TO_BASKET_ENVIRONMENT=staging
 ```
 
+Configure the button template at `views/vendor/basket/add-to-basket-button.blade.php`
+
 ## How to Use
 
 1. Add the Add To Basket field to your page blueprint with the handle `add_to_basket`
