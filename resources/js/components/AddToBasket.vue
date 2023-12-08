@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-if="enabled">
-      <div v-if="value.items.length > 0">
+      <div v-if="value.items?.length > 0">
         <p class="text-sm mb-2">
           These products will be displayed in the Basket app:
         </p>
@@ -104,12 +104,12 @@ export default {
     },
   },
   mounted() {
-    this.update({
-      enabled: this.enabled,
-      items: this.value?.items || [],
-      basketId: this.value?.basketId,
-      userId: this.value?.userId,
-    });
+    // this.update({
+    //   enabled: this.enabled,
+    //   items: this.value?.items || [],
+    //   basketId: this.value?.basketId,
+    //   userId: this.value?.userId,
+    // });
     this.refetch();
   },
   methods: {

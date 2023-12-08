@@ -31,10 +31,15 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
   const data = payload.values?.add_to_basket;
 
   log("Add to Basket");
-  // reject();
 
   if (!data?.enabled) {
     log("Not enabled");
+    resolve();
+    return;
+  }
+
+  if (!payload.values.content) {
+    log("No content");
     resolve();
     return;
   }
@@ -123,7 +128,7 @@ Statamic.$hooks.on("entry.saving", async (resolve, reject, payload) => {
     const saveIfRequired = async () => {
       const isSaveRequired = linksFound.some(
         ({ cleanedUrl }) =>
-          !currentItemData.some(({ originalUrl }) => originalUrl === cleanedUrl)
+          !currentItemData?.some(({ originalUrl }) => originalUrl === cleanedUrl)
       );
       log("isSaveRequired", isSaveRequired);
       if (isSaveRequired || !data.userId || !data.basketId) {
