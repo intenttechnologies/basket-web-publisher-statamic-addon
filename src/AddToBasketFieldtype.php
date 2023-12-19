@@ -8,7 +8,14 @@ class AddToBasketFieldtype extends Fieldtype
 {
     protected static $handle = 'add_to_basket';
 
-    protected $icon = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 0.5C2.4 0.5 0.5 2.4 0.5 10C0.5 17.6 2.4 19.5 10 19.5C17.6 19.5 19.5 17.6 19.5 10C19.5 2.4 17.6 0.5 10 0.5Z" stroke="#14171D" style="stroke:#14171D;stroke:color(display-p3 0.0784 0.0902 0.1137);stroke-opacity:1;" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.7308 9.65956C11.2308 11.5596 9.83076 12.3596 8.93076 12.1596C7.83076 11.8596 7.73076 10.4596 8.53076 9.55956C9.15681 8.70586 10.6898 8.0465 12.2265 8.00551M12.2265 8.00551C12.1223 6.72904 11.8169 5.64706 10.8308 4.75956C9.23076 3.25956 6.33076 3.35956 4.93076 5.95956C4.33076 6.95956 4.03076 8.35956 4.03076 9.75956C4.03076 11.3596 4.23076 12.9596 4.63076 14.6596C4.83076 15.1596 4.93076 15.2596 5.43076 15.3596C6.93076 15.7596 8.53076 15.9596 10.1308 15.9596C16.6308 16.0596 17.3308 11.3596 15.3308 9.15956C14.5552 8.29783 13.3898 7.97447 12.2265 8.00551Z" stroke="#14171D" style="stroke:#14171D;stroke:color(display-p3 0.0784 0.0902 0.1137);stroke-opacity:1;" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    protected $icon = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 0.5C2.4 0.5 0.5 2.4 0.5 10C0.5 17.6 2.4 19.5 10 19.5C17.6 19.5 19.5 17.6 19.5 10C19.5 2.4 17.6 0.5 10 0.5Z" stroke="#14171D" style="stroke:#14171D;stroke:color(display-p3 0.0784 0.0902 0.1137);stroke-opacity:1;" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.1228 7.97925C16.464 7.99214 17.9196 13.0811 14.1716 15.0808C12.1215 16.3005 8.95496 16.0272 6.61613 15.6107C3.08983 14.9841 5.15017 11.5713 6.89849 9.98414C8.27807 8.73221 10.1115 7.97151 12.1228 7.97925Z" stroke="#14171D" style="stroke:#14171D;stroke:color(display-p3 0.0784 0.0902 0.1137);stroke-opacity:1;" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.1179 13.2049C8.53078 14.9519 5.11924 17.0123 4.49263 13.486C4.07617 11.1484 3.80284 7.98187 5.02254 5.93055C7.02228 2.18378 12.1112 3.63943 12.1228 7.98058C12.1306 9.99063 11.3699 11.8253 10.1179 13.2049Z" stroke="#14171D" style="stroke:#14171D;stroke:color(display-p3 0.0784 0.0902 0.1137);stroke-opacity:1;" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     protected $categories = ['media', 'special'];
+
+    public function defaultValue()
+    {
+        return [
+            'enabled' => false
+        ];
+    }
 }
